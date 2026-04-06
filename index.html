@@ -81,6 +81,8 @@
 </head>
 <body>
 <div class="app">
+
+  <!-- SCREEN 0: Intro -->
   <div id="s0" class="screen active">
     <div class="card">
       <div class="logo">NISH MARK<span>8</span>ING</div>
@@ -94,6 +96,8 @@
     </div>
     <div class="footer">Nish Mark8ing · Digital Strategy for GTA Small Businesses</div>
   </div>
+
+  <!-- SCREEN 1: Questions -->
   <div id="s1" class="screen">
     <div class="card">
       <div class="logo">NISH MARK<span>8</span>ING</div>
@@ -110,6 +114,8 @@
     </div>
     <div class="footer">Nish Mark8ing · Digital Strategy for GTA Small Businesses</div>
   </div>
+
+  <!-- SCREEN 2: Results -->
   <div id="s2" class="screen">
     <div class="card">
       <div class="logo">NISH MARK<span>8</span>ING</div>
@@ -118,19 +124,20 @@
       <div id="cat-cards"></div>
       <div class="impact-box"><p id="impact-text"></p></div>
       <div class="divider"></div>
-      <p class="cta-head">Want to know exactly how to fix this?</p>
-      <p class="cta-sub">Enter your email and Nish will send you a personalised action plan based on your scorecard — free, no strings.</p>
+      <p class="cta-head">Want Nish to walk you through this?</p>
+      <p class="cta-sub">Drop your email below and Nish will reach out within 1 business day to set up a free 20-minute call — no pitch, just clarity on exactly what to fix first.</p>
       <div class="email-row">
         <input type="email" id="email-in" placeholder="your@email.com" />
         <button class="btn-send" onclick="sendEmail()">Send</button>
       </div>
-      <div class="confirm" id="confirm-msg">You're on the list. Nish will be in touch within 1 business day.</div>
-      <button class="btn-call" onclick="window.open('YOUR_BOOKING_LINK_HERE','_blank')">Book a Free 20-Minute Call with Nish</button>
+      <div class="confirm" id="confirm-msg">You're on the list. Nish will be in touch within 1 business day to set up your free call.</div>
       <button class="restart-btn" onclick="restart()">&#8592; Start a new scorecard</button>
     </div>
     <div class="footer">Nish Mark8ing · Digital Strategy for GTA Small Businesses</div>
   </div>
+
 </div>
+
 <script>
 const questions=[
   {cat:"Google Business Profile",q:"Do you have a Google Business Profile (your listing on Google Maps)?",opts:[{t:"Yes, it's set up and verified",v:"G"},{t:"I think so but I'm not sure",v:"A"},{t:"No, or I don't know what that is",v:"R"}]},
@@ -144,22 +151,109 @@ const questions=[
   {cat:"Reviews & Reputation",q:"How many Google reviews does your business have?",opts:[{t:"30 or more",v:"G"},{t:"10 to 29",v:"A"},{t:"Fewer than 10",v:"R"}]},
   {cat:"Reviews & Reputation",q:"Do you have a consistent way of asking happy clients for a Google review?",opts:[{t:"Yes, I ask regularly and it works",v:"G"},{t:"I ask occasionally but not consistently",v:"A"},{t:"I don't really ask, or not sure how",v:"R"}]}
 ];
+
 const catDefs=[
   {name:"Google Business Profile",qs:[0,1,2],copy:{G:"Your GBP is active and working for you. Customers searching locally can find you, see what you offer, and read your reviews. Keep the activity consistent.",A:"Your GBP exists but it's not pulling its full weight. Inactive listings get pushed below competitors who simply show up more often — even ones with fewer reviews than you.",R:"This is your most urgent fix. Without an active Google Business Profile, you're invisible to anyone searching locally on Google Maps. Competitors are capturing that demand right now."}},
   {name:"Website & SEO",qs:[3,4,5],copy:{G:"Your website is doing its job — it's findable, location-specific, and easy to act on. This is your strongest asset for long-term local search visibility.",A:"Your website exists but it's leaving opportunity on the table. Vague location copy and hard-to-find contact options lose you customers who were already interested.",R:"Without a website, Google has nothing to rank for you. Every competitor with even a basic site beats you in search before anyone sees your name."}},
   {name:"Social Media Presence",qs:[6,7],copy:{G:"Your social presence is consistent and clear. That builds trust with new visitors and signals activity to platforms that factor engagement into local visibility.",A:"Your social presence is patchy. Inconsistent posting and vague bios make it harder for new customers to understand what you do, where you are, and why to choose you.",R:"Your social presence isn't working hard enough. Irregular posting and unclear bios mean potential customers can't quickly understand what you offer — so they move on."}},
   {name:"Reviews & Reputation",qs:[8,9],copy:{G:"Your review count and strategy are working. A steady flow of recent reviews signals credibility to both Google and new customers researching their options.",A:"You have some reviews but not a consistent system to grow them. Review volume directly impacts how high you rank in local search — this is a gap worth closing.",R:"Low review count is quietly costing you. Most people check reviews before they visit or call. A business with fewer than 10 reviews reads as unproven — even if your service is excellent."}}
 ];
+
 let cur=0,answers=[],bizName="",bizLoc="";
-function startQuiz(){bizName=document.getElementById('biz').value.trim()||"Your Business";bizLoc=document.getElementById('loc').value.trim();cur=0;answers=[];showQ();setScreen('s1');}
-function showQ(){const q=questions[cur];const pct=Math.round((cur/questions.length)*100);document.getElementById('prog').style.width=pct+'%';document.getElementById('qcount').textContent='Question '+(cur+1)+' of '+questions.length;document.getElementById('qcat').textContent=q.cat.toUpperCase();document.getElementById('qtext').textContent=q.q;const opts=document.getElementById('qopts');opts.innerHTML='';q.opts.forEach((o)=>{const b=document.createElement('button');b.className='answer-btn';b.textContent=o.t;b.onclick=()=>selectAnswer(o.v,b);opts.appendChild(b);});}
-function selectAnswer(v,btn){document.querySelectorAll('.answer-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');setTimeout(()=>{answers[cur]=v;cur++;if(cur<questions.length){showQ();}else{showResults();}},280);}
-function goBack(){if(cur>0){cur--;showQ();}else{setScreen('s0');}}
-function catRag(qs){const vals=qs.map(i=>answers[i]);if(vals.includes('R'))return'R';if(vals.includes('A'))return'A';return'G';}
-function showResults(){document.getElementById('biz-name-out').textContent=bizName+(bizLoc?' · '+bizLoc:'');const cards=document.getElementById('cat-cards');cards.innerHTML='';let reds=0;catDefs.forEach(c=>{const rag=catRag(c.qs);if(rag==='R')reds++;const dotClass='rag-dot rag-'+{R:'red',A:'amber',G:'green'}[rag];const labelClass='rag-label label-'+{R:'red',A:'amber',G:'green'}[rag];const labelText={R:'Needs attention',A:'Room to improve',G:'Looking good'}[rag];const div=document.createElement('div');div.className='cat-card';div.innerHTML='<div class="cat-header"><div class="'+dotClass+'"></div><span class="cat-name">'+c.name+'</span><span class="'+labelClass+'">'+labelText+'</span></div><p class="cat-copy">'+c.copy[rag]+'</p>';cards.appendChild(div);});const impacts=["Your local search foundation is solid. The opportunity now is consistency and growth.","You have one critical gap that's likely costing you new customers every week. The good news — it's fixable without paid advertising.","Two of your four local search pillars need attention. Businesses that fix these gaps typically see measurable improvement in local visibility within 60 days.","Your local search presence has significant gaps across multiple areas. Customers who are actively searching for what you offer are finding your competitors instead of you.","Your local search presence has significant gaps across all areas. Customers who are actively searching for what you offer are finding your competitors instead of you."];document.getElementById('impact-text').textContent=impacts[Math.min(reds,4)];document.getElementById('confirm-msg').style.display='none';document.getElementById('email-in').value='';setScreen('s2');}
-function sendEmail(){const v=document.getElementById('email-in').value.trim();if(!v||!v.includes('@'))return;document.getElementById('confirm-msg').style.display='block';}
-function restart(){document.getElementById('biz').value='';document.getElementById('loc').value='';document.getElementById('ig').value='';document.getElementById('web').value='';setScreen('s0');}
-function setScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+
+function startQuiz(){
+  bizName=document.getElementById('biz').value.trim()||"Your Business";
+  bizLoc=document.getElementById('loc').value.trim();
+  cur=0;answers=[];
+  showQ();
+  setScreen('s1');
+}
+
+function showQ(){
+  const q=questions[cur];
+  const pct=Math.round((cur/questions.length)*100);
+  document.getElementById('prog').style.width=pct+'%';
+  document.getElementById('qcount').textContent='Question '+(cur+1)+' of '+questions.length;
+  document.getElementById('qcat').textContent=q.cat.toUpperCase();
+  document.getElementById('qtext').textContent=q.q;
+  const opts=document.getElementById('qopts');
+  opts.innerHTML='';
+  q.opts.forEach((o)=>{
+    const b=document.createElement('button');
+    b.className='answer-btn';
+    b.textContent=o.t;
+    b.onclick=()=>selectAnswer(o.v,b);
+    opts.appendChild(b);
+  });
+}
+
+function selectAnswer(v,btn){
+  document.querySelectorAll('.answer-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  setTimeout(()=>{
+    answers[cur]=v;
+    cur++;
+    if(cur<questions.length){showQ();}
+    else{showResults();}
+  },280);
+}
+
+function goBack(){
+  if(cur>0){cur--;showQ();}
+  else{setScreen('s0');}
+}
+
+function catRag(qs){
+  const vals=qs.map(i=>answers[i]);
+  if(vals.includes('R'))return'R';
+  if(vals.includes('A'))return'A';
+  return'G';
+}
+
+function showResults(){
+  document.getElementById('biz-name-out').textContent=bizName+(bizLoc?' · '+bizLoc:'');
+  const cards=document.getElementById('cat-cards');
+  cards.innerHTML='';
+  let reds=0;
+  catDefs.forEach(c=>{
+    const rag=catRag(c.qs);
+    if(rag==='R')reds++;
+    const dotClass='rag-dot rag-'+{R:'red',A:'amber',G:'green'}[rag];
+    const labelClass='rag-label label-'+{R:'red',A:'amber',G:'green'}[rag];
+    const labelText={R:'Needs attention',A:'Room to improve',G:'Looking good'}[rag];
+    const div=document.createElement('div');
+    div.className='cat-card';
+    div.innerHTML='<div class="cat-header"><div class="'+dotClass+'"></div><span class="cat-name">'+c.name+'</span><span class="'+labelClass+'">'+labelText+'</span></div><p class="cat-copy">'+c.copy[rag]+'</p>';
+    cards.appendChild(div);
+  });
+  const impacts=["Your local search foundation is solid. The opportunity now is consistency and growth.","You have one critical gap that's likely costing you new customers every week. The good news — it's fixable without paid advertising.","Two of your four local search pillars need attention. Businesses that fix these gaps typically see measurable improvement in local visibility within 60 days.","Your local search presence has significant gaps across multiple areas. Customers who are actively searching for what you offer are finding your competitors instead of you.","Your local search presence has significant gaps across all areas. Customers who are actively searching for what you offer are finding your competitors instead of you."];
+  document.getElementById('impact-text').textContent=impacts[Math.min(reds,4)];
+  document.getElementById('confirm-msg').style.display='none';
+  document.getElementById('email-in').value='';
+  setScreen('s2');
+}
+
+function sendEmail(){
+  const v=document.getElementById('email-in').value.trim();
+  if(!v||!v.includes('@'))return;
+  const biz=bizName||'my business';
+  window.location.href='mailto:nishmark8ing@gmail.com?subject=Local%20Search%20Scorecard%20%E2%80%94%20'+encodeURIComponent(biz)+'&body=Hi%20Nish%2C%0D%0A%0D%0AI%20just%20completed%20the%20Local%20Search%20Scorecard%20for%20'+encodeURIComponent(biz)+'%20and%20I%E2%80%99d%20love%20to%20set%20up%20a%20free%2020-minute%20call%20to%20talk%20through%20the%20results.%0D%0A%0D%0AMy%20email%20is%3A%20'+encodeURIComponent(v)+'%0D%0A%0D%0ALooking%20forward%20to%20connecting!';
+  document.getElementById('confirm-msg').style.display='block';
+}
+
+function restart(){
+  document.getElementById('biz').value='';
+  document.getElementById('loc').value='';
+  document.getElementById('ig').value='';
+  document.getElementById('web').value='';
+  setScreen('s0');
+}
+
+function setScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
 </script>
 </body>
 </html>
