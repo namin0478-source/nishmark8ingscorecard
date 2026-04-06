@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Search Scorecard — Nish Mark8ing</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#f4f2ed;min-height:100vh;padding:1.5rem 1rem}
+.wrap{max-width:420px;margin:0 auto}
+.card{background:#fff;border-radius:14px;border:1px solid #e5e3de;padding:1.5rem;margin-bottom:1rem}
+.logo{font-size:11px;font-weight:700;letter-spacing:0.08em;color:#888;margin-bottom:1.5rem}
+.logo b{color:#C79A2B}
+.screen{display:none}.screen.on{display:block}
+h1{font-size:22px;font-weight:700;color:#1a1a1a;line-height:1.35;margin-bottom:0.5rem}
+.sub{font-size:14px;color:#666;line-height:1.65;margin-bottom:1.5rem}
+.lbl{display:block;font-size:11px;font-weight:700;letter-spacing:0.06em;color:#888;margin-bottom:5px}
+input{width:100%;padding:11px 13px;font-size:15px;border:1px solid #ddd;border-radius:10px;font-family:'DM Sans',sans-serif;color:#1a1a1a;background:#fff;margin-bottom:1rem}
+input:focus{outline:none;border-color:#C79A2B}
+.btn{width:100%;padding:13px;background:#C79A2B;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s}
+.btn:hover{background:#b08820}
+.back{background:none;border:none;font-size:12px;color:#888;cursor:pointer;padding:0;margin-bottom:1rem;font-family:'DM Sans',sans-serif}
+.back:hover{color:#1a1a1a}
+.prog-wrap{margin-bottom:1.25rem}
+.prog-meta{display:flex;justify-content:space-between;margin-bottom:6px}
+.prog-bar{height:3px;background:#f0ede8;border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:#C79A2B;border-radius:2px;transition:width 0.3s}
+.q-cat{font-size:11px;font-weight:700;letter-spacing:0.06em;color:#C79A2B}
+.q-num{font-size:12px;color:#888}
+.q-text{font-size:17px;font-weight:500;color:#1a1a1a;line-height:1.45;margin-bottom:1.25rem}
+.opt{width:100%;padding:13px 16px;margin-bottom:8px;background:#fff;border:1px solid #ddd;border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1a1a1a;text-align:left;cursor:pointer;line-height:1.45;transition:border-color 0.15s,background 0.15s}
+.opt:hover{border-color:#C79A2B;background:#fdf6e7}
+.cat-card{background:#fff;border:1px solid #e5e3de;border-radius:14px;padding:1rem 1.25rem;margin-bottom:10px}
+.cat-head{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.cat-name{font-size:14px;font-weight:700;color:#1a1a1a;flex:1}
+.badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}
+.cat-copy{font-size:13px;color:#666;line-height:1.65}
+.impact{background:#f8f7f4;border-radius:10px;padding:1rem 1.25rem;margin:1.25rem 0;border-left:3px solid #C79A2B;font-size:14px;color:#1a1a1a;line-height:1.65}
+.divider{border:none;border-top:1px solid #e5e3de;margin:1.5rem 0}
+.cta-box{background:#fdf6e7;border-radius:12px;padding:1.25rem;text-align:center}
+.cta-box h2{font-size:17px;font-weight:700;color:#1a1a1a;margin-bottom:8px}
+.cta-box p{font-size:13px;color:#666;line-height:1.6;margin-bottom:1rem}
+.email-display{font-size:16px;font-weight:700;color:#C79A2B;display:block;margin-bottom:8px;letter-spacing:0.02em}
+.restart{display:block;width:100%;padding:11px;background:none;border:1px solid #ddd;border-radius:10px;font-size:13px;font-family:'DM Sans',sans-serif;color:#888;cursor:pointer;margin-top:1rem;text-align:center}
+.restart:hover{border-color:#888;color:#1a1a1a}
+.footer{font-size:11px;color:#aaa;text-align:center;letter-spacing:0.03em;padding-bottom:1rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div id="s0" class="screen on">
+<div class="card">
+  <div class="logo">NISH MARK<b>8</b>ING</div>
+  <h1>How visible is your business when locals search?</h1>
+  <p class="sub">Answer 10 quick questions and get your free Local Search Scorecard — no email needed to see your results.</p>
+  <label class="lbl">BUSINESS NAME</label><input id="f0" placeholder="e.g. Vibrant Beauty & Hair Salon">
+  <label class="lbl">CITY / NEIGHBOURHOOD</label><input id="f1" placeholder="e.g. Woodbridge, ON">
+  <label class="lbl">INSTAGRAM <span style="font-weight:400;opacity:0.6">(optional)</span></label><input id="f2" placeholder="@yourbusiness">
+  <label class="lbl">WEBSITE <span style="font-weight:400;opacity:0.6">(optional)</span></label><input id="f3" placeholder="www.yourbusiness.com">
+  <button class="btn" onclick="start()">Check My Score</button>
+</div>
+<div class="footer">Nish Mark8ing · Digital Strategy for GTA Small Businesses</div>
+</div>
+
+<div id="s1" class="screen">
+<div class="card">
+  <div class="logo">NISH MARK<b>8</b>ING</div>
+  <button class="back" onclick="back()">&#8592; Back</button>
+  <div class="prog-wrap">
+    <div class="prog-meta">
+      <span class="q-num" id="qnum"></span>
+      <span class="q-cat" id="qcat"></span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="pfill"></div></div>
+  </div>
+  <div class="q-text" id="qtxt"></div>
+  <div id="qopts"></div>
+</div>
+<div class="footer">Nish Mark8ing · Digital Strategy for GTA Small Businesses</div>
+</div>
+
+<div id="s2" class="screen">
+<div class="card">
+  <div class="logo">NISH MARK<b>8</b>ING</div>
+  <h1>Your Local Search Scorecard</h1>
+  <p style="font-size:13px;color:#888;margin-bottom:1.5rem" id="bizout"></p>
+  <div id="cats"></div>
+  <div class="impact" id="impact"></div>
+  <div class="divider"></div>
+  <div class="cta-box">
+    <h2>Want Nish to walk you through this?</h2>
+    <p>Email Nish directly to set up a free 20-minute call — no pitch, just clarity on exactly what to fix first.</p>
+    <span class="email-display">nishmark8ing@gmail.com</span>
+    <p style="font-size:12px;color:#aaa;margin-bottom:0">No agency overhead. Senior strategy. GTA-based.</p>
+  </div>
+  <button class="restart" onclick="restart()">&#8592; Start a new scorecard</button>
+</div>
+<div class="footer">Nish Mark8ing · Digital Strategy for GTA Small Businesses</div>
+</div>
+
+</div>
+
+<script>
+var Q=[
+  {c:"Google Business Profile",q:"Do you have a Google Business Profile (your listing on Google Maps)?",o:["Yes, it's set up and verified","I think so but I'm not sure","No, or I don't know what that is"],v:["G","A","R"]},
+  {c:"Google Business Profile",q:"When did you last post an update or photo to your Google Business Profile?",o:["Within the last 2 weeks","Within the last 3 months","More than 3 months ago, or never"],v:["G","A","R"]},
+  {c:"Google Business Profile",q:"Do you actively respond to your Google reviews?",o:["Yes, I respond to most of them","Occasionally","Rarely or never"],v:["G","A","R"]},
+  {c:"Website & SEO",q:"Does your business have a website?",o:["Yes, it's live and up to date","Yes, but it needs work","No website"],v:["G","A","R"]},
+  {c:"Website & SEO",q:"Does your website clearly mention the city or area you serve?",o:["Yes, throughout","Somewhere, but not prominently","No, or no website"],v:["G","A","R"]},
+  {c:"Website & SEO",q:"Can customers easily book or contact you from your website?",o:["Yes, easy to find","It's there but not obvious","No, or no website"],v:["G","A","R"]},
+  {c:"Social Media",q:"How often do you post on Instagram or Facebook?",o:["At least once a week","A few times a month","Rarely or inconsistently"],v:["G","A","R"]},
+  {c:"Social Media",q:"Does your bio clearly say what you do and where you're located?",o:["Yes, it's clear","One but not the other","Not really"],v:["G","A","R"]},
+  {c:"Reviews & Reputation",q:"How many Google reviews does your business have?",o:["30 or more","10 to 29","Fewer than 10"],v:["G","A","R"]},
+  {c:"Reviews & Reputation",q:"Do you have a consistent way of asking happy clients for a Google review?",o:["Yes, I ask regularly","Occasionally but not consistently","I don't really ask"],v:["G","A","R"]}
+];
+var CATS=[
+  {n:"Google Business Profile",i:[0,1,2],copy:{G:"Your GBP is active and working. Customers searching locally can find you, see your offer, and read your reviews.",A:"Your GBP exists but isn't pulling full weight. Inactive listings get pushed below competitors who simply show up more often.",R:"Most urgent fix. Without an active GBP you're invisible on Google Maps — competitors are capturing that demand right now."}},
+  {n:"Website & SEO",i:[3,4,5],copy:{G:"Your website is doing its job — findable, location-specific, and easy to act on.",A:"Website exists but leaving opportunity on the table. Vague location copy and hard-to-find contact options lose interested customers.",R:"Without a website, Google has nothing to rank. Every competitor with a basic site beats you in local search before anyone sees your name."}},
+  {n:"Social Media",i:[6,7],copy:{G:"Consistent and clear social presence — builds trust and signals activity to platforms.",A:"Patchy social presence. Inconsistent posting and vague bios make it harder for new customers to choose you.",R:"Not working hard enough. Potential customers can't quickly understand what you offer — so they move on."}},
+  {n:"Reviews & Reputation",i:[8,9],copy:{G:"Review count and strategy are working. Recent reviews signal credibility to Google and new customers.",A:"Some reviews but no consistent system to grow them. Volume directly impacts local search ranking.",R:"Low review count is quietly costing you. Fewer than 10 reads as unproven — even when service is excellent."}}
+];
+var cur=0,ans=[],biz="",loc="";
+function go(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on')});document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
+function rag(idx){var v=idx.map(function(i){return ans[i]});if(v.indexOf('R')>-1)return'R';if(v.indexOf('A')>-1)return'A';return'G';}
+function start(){biz=document.getElementById('f0').value.trim()||'Your Business';loc=document.getElementById('f1').value.trim();cur=0;ans=[];showQ();go('s1');}
+function showQ(){
+  var q=Q[cur];
+  document.getElementById('qnum').textContent='Question '+(cur+1)+' of '+Q.length;
+  document.getElementById('qcat').textContent=q.c.toUpperCase();
+  document.getElementById('pfill').style.width=Math.round(cur/Q.length*100)+'%';
+  document.getElementById('qtxt').textContent=q.q;
+  var html='';
+  q.o.forEach(function(o,i){html+='<button class="opt" onclick="pick(\''+q.v[i]+'\')">'+o+'</button>';});
+  document.getElementById('qopts').innerHTML=html;
+}
+function pick(v){ans[cur]=v;cur++;if(cur<Q.length){showQ();}else{showResults();}}
+function back(){if(cur>0){cur--;showQ();}else{go('s0');}}
+function showResults(){
+  document.getElementById('bizout').textContent=biz+(loc?' · '+loc:'');
+  var html='';var reds=0;
+  var dc={R:'#E24B4A',A:'#EF9F27',G:'#639922'};
+  var db={R:'#FCEBEB',A:'#FAEEDA',G:'#EAF3DE'};
+  var dt={R:'#A32D2D',A:'#854F0B',G:'#3B6D11'};
+  var dl={R:'Needs attention',A:'Room to improve',G:'Looking good'};
+  CATS.forEach(function(c){
+    var r=rag(c.i);if(r==='R')reds++;
+    html+='<div class="cat-card"><div class="cat-head"><div class="dot" style="background:'+dc[r]+'"></div><span class="cat-name">'+c.n+'</span><span class="badge" style="background:'+db[r]+';color:'+dt[r]+'">'+dl[r]+'</span></div><p class="cat-copy">'+c.copy[r]+'</p></div>';
+  });
+  document.getElementById('cats').innerHTML=html;
+  var imp=["Your local search foundation is solid. The opportunity now is consistency and growth.","You have one critical gap that's likely costing you new customers every week — fixable without paid advertising.","Two of your four local search pillars need attention. Businesses that fix these typically see improvement in visibility within 60 days.","Your local search presence has significant gaps. Customers searching for you are finding competitors instead.","Significant gaps across all areas. Customers are finding your competitors instead of you."];
+  document.getElementById('impact').textContent=imp[Math.min(reds,4)];
+  go('s2');
+}
+function restart(){document.getElementById('f0').value='';document.getElementById('f1').value='';document.getElementById('f2').value='';document.getElementById('f3').value='';go('s0');}
+</script>
+</body>
+</html>
