@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Search Scorecard — Nish Mark8ing</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --gold:#C79A2B;
+    --gold-light:#fdf6e7;
+    --gold-dark:#b08820;
+    --text:#1a1a1a;
+    --text-muted:#666;
+    --text-hint:#999;
+    --bg:#ffffff;
+    --bg-secondary:#f8f7f4;
+    --border:#e5e3de;
+    --red:#E24B4A;--red-bg:#FCEBEB;--red-text:#A32D2D;
+    --amber:#EF9F27;--amber-bg:#FAEEDA;--amber-text:#854F0B;
+    --green:#639922;--green-bg:#EAF3DE;--green-text:#3B6D11;
+    --radius:10px;--radius-lg:14px;
+  }
+  body{font-family:'DM Sans',sans-serif;background:#f4f2ed;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:1.5rem 1rem}
+  .app{width:100%;max-width:420px}
+  .card{background:var(--bg);border-radius:var(--radius-lg);border:1px solid var(--border);padding:1.5rem;margin-bottom:1rem}
+  .logo{font-size:12px;font-weight:600;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:1.5rem}
+  .logo span{color:var(--gold)}
+  .screen{display:none}.screen.active{display:block}
+  h1{font-size:22px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:0.5rem}
+  .sub{font-size:14px;color:var(--text-muted);line-height:1.65;margin-bottom:1.5rem}
+  .field{margin-bottom:1rem}
+  .field label{display:block;font-size:11px;font-weight:600;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:6px}
+  .field input{width:100%;padding:11px 13px;font-size:15px;font-family:'DM Sans',sans-serif;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text);transition:border-color 0.2s}
+  .field input:focus{outline:none;border-color:var(--gold)}
+  .field input::placeholder{color:var(--text-hint)}
+  .btn-primary{width:100%;padding:14px;background:var(--gold);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:0.25rem;transition:background 0.2s}
+  .btn-primary:hover{background:var(--gold-dark)}
+  .progress-wrap{margin-bottom:1.25rem}
+  .progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .q-counter{font-size:12px;color:var(--text-muted)}
+  .q-category{font-size:11px;font-weight:600;letter-spacing:0.06em;color:var(--gold)}
+  .progress-bar{height:3px;background:var(--bg-secondary);border-radius:2px;overflow:hidden}
+  .progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width 0.35s ease}
+  .q-text{font-size:17px;font-weight:500;color:var(--text);line-height:1.45;margin-bottom:1.25rem}
+  .answer-btn{width:100%;padding:13px 16px;margin-bottom:8px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);text-align:left;cursor:pointer;line-height:1.45;transition:border-color 0.15s,background 0.15s}
+  .answer-btn:hover{border-color:var(--gold);background:var(--gold-light)}
+  .answer-btn.selected{border-color:var(--gold);background:var(--gold-light);color:#7a5a0a;font-weight:500}
+  .back-btn{display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--text-muted);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;padding:0;margin-bottom:1.25rem}
+  .back-btn:hover{color:var(--text)}
+  .score-meta{font-size:13px;color:var(--text-muted);margin-top:4px;margin-bottom:1.5rem}
+  .cat-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.25rem;margin-bottom:10px}
+  .cat-header{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+  .rag-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+  .rag-red{background:var(--red)}.rag-amber{background:var(--amber)}.rag-green{background:var(--green)}
+  .cat-name{font-size:14px;font-weight:600;color:var(--text);flex:1}
+  .rag-label{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px}
+  .label-red{background:var(--red-bg);color:var(--red-text)}
+  .label-amber{background:var(--amber-bg);color:var(--amber-text)}
+  .label-green{background:var(--green-bg);color:var(--green-text)}
+  .cat-copy{font-size:13px;color:var(--text-muted);line-height:1.65}
+  .impact-box{background:var(--bg-secondary);border-radius:var(--radius);padding:1rem 1.25rem;margin:1.25rem 0;border-left:3px solid var(--gold)}
+  .impact-box p{font-size:14px;color:var(--text);line-height:1.65}
+  .divider{border:none;border-top:1px solid var(--border);margin:1.5rem 0}
+  .cta-head{font-size:18px;font-weight:600;color:var(--text);margin-bottom:6px}
+  .cta-sub{font-size:13px;color:var(--text-muted);margin-bottom:1.1rem;line-height:1.65}
+  .email-row{display:flex;gap:8px;margin-bottom:8px}
+  .email-row input{flex:1;padding:11px 13px;font-size:14px;font-family:'DM Sans',sans-serif;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--text)}
+  .email-row input:focus{outline:none;border-color:var(--gold)}
+  .email-row input::placeholder{color:var(--text-hint)}
+  .btn-send{padding:11px 16px;background:var(--gold);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;transition:background 0.2s}
+  .btn-send:hover{background:var(--gold-dark)}
+  .btn-call{width:100%;padding:14px;background:var(--bg);border:2px solid var(--gold);border-radius:var(--radius);font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;color:var(--gold);cursor:pointer;margin-top:8px;transition:background 0.2s}
+  .btn-call:hover{background:var(--gold-light)}
+  .confirm{font-size:13px;color:var(--green-text);padding:9px 13px;background:var(--green-bg);border-radius:var(--radius);margin-top:8px;display:none}
+  .footer{font-size:11px;color:var(--text-hint);text-align:center;margin-top:1.25rem;letter-spacing:0.03em}
+  .restart-btn{display:block;width:100%;padding:11px;background:none;border:1px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text-muted);cursor:pointer;margin-top:1rem;text-align:center}
+  .restart-btn:hover{border-color:var(--text-muted);color:var(--text)}
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="s0" class="screen active">
+    <div class="card">
+      <div class="logo">NISH MARK<span>8</span>ING</div>
+      <h1>How visible is your business when locals search?</h1>
+      <p class="sub">Answer 10 quick questions and get your free Local Search Scorecard — no email needed to see your results.</p>
+      <div class="field"><label>BUSINESS NAME</label><input id="biz" placeholder="e.g. Vibrant Beauty & Hair Salon" /></div>
+      <div class="field"><label>CITY / NEIGHBOURHOOD</label><input id="loc" placeholder="e.g. Woodbridge, ON" /></div>
+      <div class="field"><label>INSTAGRAM HANDLE <span style="font-weight:400;opacity:0.6">(optional)</span></label><input id="ig" placeholder="@yourbusiness" /></div>
+      <div class="field"><label>WEBSITE URL <span style="font-weight:400;opacity:0.6">(optional)</span></label><input id="web" placeholder="www.yourbusiness.com" /></div>
+      <button class="btn-primary" onclick="startQuiz()">Check My Score</button>
+    </div>
+    <div class="footer">Nish Mark8ing · Digital Strategy for GTA Small Businesses</div>
+  </div>
+  <div id="s1" class="screen">
+    <div class="card">
+      <div class="logo">NISH MARK<span>8</span>ING</div>
+      <button class="back-btn" onclick="goBack()">&#8592; Back</button>
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span class="q-counter" id="qcount"></span>
+          <span class="q-category" id="qcat"></span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="prog"></div></div>
+      </div>
+      <div class="q-text" id="qtext"></div>
+      <div id="qopts"></div>
+    </div>
+    <div class="footer">Nish Mark8ing · Digital Strategy for GTA Small Businesses</div>
+  </div>
+  <div id="s2" class="screen">
+    <div class="card">
+      <div class="logo">NISH MARK<span>8</span>ING</div>
+      <h1>Your Local Search Scorecard</h1>
+      <p class="score-meta" id="biz-name-out"></p>
+      <div id="cat-cards"></div>
+      <div class="impact-box"><p id="impact-text"></p></div>
+      <div class="divider"></div>
+      <p class="cta-head">Want to know exactly how to fix this?</p>
+      <p class="cta-sub">Enter your email and Nish will send you a personalised action plan based on your scorecard — free, no strings.</p>
+      <div class="email-row">
+        <input type="email" id="email-in" placeholder="your@email.com" />
+        <button class="btn-send" onclick="sendEmail()">Send</button>
+      </div>
+      <div class="confirm" id="confirm-msg">You're on the list. Nish will be in touch within 1 business day.</div>
+      <button class="btn-call" onclick="window.open('YOUR_BOOKING_LINK_HERE','_blank')">Book a Free 20-Minute Call with Nish</button>
+      <button class="restart-btn" onclick="restart()">&#8592; Start a new scorecard</button>
+    </div>
+    <div class="footer">Nish Mark8ing · Digital Strategy for GTA Small Businesses</div>
+  </div>
+</div>
+<script>
+const questions=[
+  {cat:"Google Business Profile",q:"Do you have a Google Business Profile (your listing on Google Maps)?",opts:[{t:"Yes, it's set up and verified",v:"G"},{t:"I think so but I'm not sure",v:"A"},{t:"No, or I don't know what that is",v:"R"}]},
+  {cat:"Google Business Profile",q:"When did you last post an update, photo, or offer to your Google Business Profile?",opts:[{t:"Within the last 2 weeks",v:"G"},{t:"Within the last 3 months",v:"A"},{t:"More than 3 months ago, or never",v:"R"}]},
+  {cat:"Google Business Profile",q:"Do you actively respond to your Google reviews?",opts:[{t:"Yes, I respond to most of them",v:"G"},{t:"Occasionally",v:"A"},{t:"Rarely or never",v:"R"}]},
+  {cat:"Website & SEO",q:"Does your business have a website?",opts:[{t:"Yes, it's live and up to date",v:"G"},{t:"Yes, but it needs work or hasn't been updated",v:"A"},{t:"No website",v:"R"}]},
+  {cat:"Website & SEO",q:"Does your website clearly mention the city or area you serve?",opts:[{t:"Yes, it's mentioned throughout",v:"G"},{t:"Somewhere, but not prominently",v:"A"},{t:"No, or I don't have a website",v:"R"}]},
+  {cat:"Website & SEO",q:"Can customers easily book, call, or contact you from your website?",opts:[{t:"Yes, it's easy to find",v:"G"},{t:"It's there but not obvious",v:"A"},{t:"No, or I don't have a website",v:"R"}]},
+  {cat:"Social Media Presence",q:"How often do you post on Instagram or Facebook?",opts:[{t:"At least once a week",v:"G"},{t:"A few times a month",v:"A"},{t:"Rarely or inconsistently",v:"R"}]},
+  {cat:"Social Media Presence",q:"Does your Instagram or Facebook bio clearly say what you do and where you're located?",opts:[{t:"Yes, it's clear",v:"G"},{t:"It mentions one but not the other",v:"A"},{t:"Not really",v:"R"}]},
+  {cat:"Reviews & Reputation",q:"How many Google reviews does your business have?",opts:[{t:"30 or more",v:"G"},{t:"10 to 29",v:"A"},{t:"Fewer than 10",v:"R"}]},
+  {cat:"Reviews & Reputation",q:"Do you have a consistent way of asking happy clients for a Google review?",opts:[{t:"Yes, I ask regularly and it works",v:"G"},{t:"I ask occasionally but not consistently",v:"A"},{t:"I don't really ask, or not sure how",v:"R"}]}
+];
+const catDefs=[
+  {name:"Google Business Profile",qs:[0,1,2],copy:{G:"Your GBP is active and working for you. Customers searching locally can find you, see what you offer, and read your reviews. Keep the activity consistent.",A:"Your GBP exists but it's not pulling its full weight. Inactive listings get pushed below competitors who simply show up more often — even ones with fewer reviews than you.",R:"This is your most urgent fix. Without an active Google Business Profile, you're invisible to anyone searching locally on Google Maps. Competitors are capturing that demand right now."}},
+  {name:"Website & SEO",qs:[3,4,5],copy:{G:"Your website is doing its job — it's findable, location-specific, and easy to act on. This is your strongest asset for long-term local search visibility.",A:"Your website exists but it's leaving opportunity on the table. Vague location copy and hard-to-find contact options lose you customers who were already interested.",R:"Without a website, Google has nothing to rank for you. Every competitor with even a basic site beats you in search before anyone sees your name."}},
+  {name:"Social Media Presence",qs:[6,7],copy:{G:"Your social presence is consistent and clear. That builds trust with new visitors and signals activity to platforms that factor engagement into local visibility.",A:"Your social presence is patchy. Inconsistent posting and vague bios make it harder for new customers to understand what you do, where you are, and why to choose you.",R:"Your social presence isn't working hard enough. Irregular posting and unclear bios mean potential customers can't quickly understand what you offer — so they move on."}},
+  {name:"Reviews & Reputation",qs:[8,9],copy:{G:"Your review count and strategy are working. A steady flow of recent reviews signals credibility to both Google and new customers researching their options.",A:"You have some reviews but not a consistent system to grow them. Review volume directly impacts how high you rank in local search — this is a gap worth closing.",R:"Low review count is quietly costing you. Most people check reviews before they visit or call. A business with fewer than 10 reviews reads as unproven — even if your service is excellent."}}
+];
+let cur=0,answers=[],bizName="",bizLoc="";
+function startQuiz(){bizName=document.getElementById('biz').value.trim()||"Your Business";bizLoc=document.getElementById('loc').value.trim();cur=0;answers=[];showQ();setScreen('s1');}
+function showQ(){const q=questions[cur];const pct=Math.round((cur/questions.length)*100);document.getElementById('prog').style.width=pct+'%';document.getElementById('qcount').textContent='Question '+(cur+1)+' of '+questions.length;document.getElementById('qcat').textContent=q.cat.toUpperCase();document.getElementById('qtext').textContent=q.q;const opts=document.getElementById('qopts');opts.innerHTML='';q.opts.forEach((o)=>{const b=document.createElement('button');b.className='answer-btn';b.textContent=o.t;b.onclick=()=>selectAnswer(o.v,b);opts.appendChild(b);});}
+function selectAnswer(v,btn){document.querySelectorAll('.answer-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');setTimeout(()=>{answers[cur]=v;cur++;if(cur<questions.length){showQ();}else{showResults();}},280);}
+function goBack(){if(cur>0){cur--;showQ();}else{setScreen('s0');}}
+function catRag(qs){const vals=qs.map(i=>answers[i]);if(vals.includes('R'))return'R';if(vals.includes('A'))return'A';return'G';}
+function showResults(){document.getElementById('biz-name-out').textContent=bizName+(bizLoc?' · '+bizLoc:'');const cards=document.getElementById('cat-cards');cards.innerHTML='';let reds=0;catDefs.forEach(c=>{const rag=catRag(c.qs);if(rag==='R')reds++;const dotClass='rag-dot rag-'+{R:'red',A:'amber',G:'green'}[rag];const labelClass='rag-label label-'+{R:'red',A:'amber',G:'green'}[rag];const labelText={R:'Needs attention',A:'Room to improve',G:'Looking good'}[rag];const div=document.createElement('div');div.className='cat-card';div.innerHTML='<div class="cat-header"><div class="'+dotClass+'"></div><span class="cat-name">'+c.name+'</span><span class="'+labelClass+'">'+labelText+'</span></div><p class="cat-copy">'+c.copy[rag]+'</p>';cards.appendChild(div);});const impacts=["Your local search foundation is solid. The opportunity now is consistency and growth.","You have one critical gap that's likely costing you new customers every week. The good news — it's fixable without paid advertising.","Two of your four local search pillars need attention. Businesses that fix these gaps typically see measurable improvement in local visibility within 60 days.","Your local search presence has significant gaps across multiple areas. Customers who are actively searching for what you offer are finding your competitors instead of you.","Your local search presence has significant gaps across all areas. Customers who are actively searching for what you offer are finding your competitors instead of you."];document.getElementById('impact-text').textContent=impacts[Math.min(reds,4)];document.getElementById('confirm-msg').style.display='none';document.getElementById('email-in').value='';setScreen('s2');}
+function sendEmail(){const v=document.getElementById('email-in').value.trim();if(!v||!v.includes('@'))return;document.getElementById('confirm-msg').style.display='block';}
+function restart(){document.getElementById('biz').value='';document.getElementById('loc').value='';document.getElementById('ig').value='';document.getElementById('web').value='';setScreen('s0');}
+function setScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+</script>
+</body>
+</html>
